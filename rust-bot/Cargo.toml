@@ -1,0 +1,58 @@
+[package]
+name = "hanisha-rust-bot"
+version = "1.0.0"
+edition = "2021"
+
+[profile.release]
+lto = true
+strip = true
+opt-level = "z"
+
+[dependencies]
+# Core runtime - multi_thread needed for Tokio
+tokio = { version = "1", features = ["rt_multi_thread", "macros"], default-features = false }
+
+# Allocator - mimalloc returns freed memory to OS immediately
+mimalloc = "0.1"
+
+# TTL-bounded cache for force-subscribe (max 50,000 entries, 15-minute TTL)
+# resolve = 2 handles yanked versions on crates.io
+moka = { version = "0.3", resolve = "2" }
+
+# MongoDB driver - use rustls (no OpenSSL) via tls-unstable feature
+# max_pool_size set to 5 for Koyeb free tier (0.1 vCPU)
+mongodb = { version = "2.0", features = ["tls-unstable"], resolve = "2" }
+
+# HTTP client with rustls (no OpenSSL) - used by teloxide internally
+# reqwest with rustls features and no default OpenSSL features
+reqwest = { version = "0.11", features = ["rustls", "json"], default-features = false, resolve = "2" }
+
+# Serialization
+serde = { version = "1", features = ["derive"], resolve = "2" }
+serde_json = "1"
+
+# Tokio utilities (buffered streams, etc.)
+tokio-util = "0.7"
+# Tower HTTP layer (tracing, compression, etc.)
+tower-http = "0.6"
+# Axum web framework for keep-alive HTTP server
+axum = "0.7"
+# Futures utilities
+futures = "0.3"
+# Time handling and chrono integration
+chrono = "0.4"
+# Base64 encoding for Telegram file IDs
+base64 = "0.21"
+# Regex patterns for query cleaning and filter matching
+regex = "1"
+# HMAC for potential security operations
+hmac = "0.4"
+# SHA-256 for hashing operations
+sha2 = "0.10"
+
+# Telegram bot client - teloxide is a high-level framework
+# It uses reqwest internally; with reqwest's rustls feature,
+# all TLS is rustls (no OpenSSL)
+teloxide = { version = "0.2", features = ["client"], resolve = "2" }
+
+# Keep-alive HTTP server dependencies are already pulled in by axum/tower-http
