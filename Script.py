@@ -43,11 +43,8 @@ Each help page contains a short list for easy reading.
 • /font - Style your text
 • /genpassword or /genpw - Generate password""",
 """<b>📘 Help (4/6): Media/Extra Commands</b>
-• /tts - Text to speech
-• /carbon - Generate carbon image
 • /stickerid - Get sticker file id
 • /json /js /showjson - Message JSON
-• /img /cup /telegraph - Image to link
 • /share /share_text /sharetext - Share text
 • /echo - Repeat text
 • /pin - Pin replied message
